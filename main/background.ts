@@ -2,9 +2,10 @@ import path from 'path'
 import { app, ipcMain } from 'electron'
 import serve from 'electron-serve'
 import { createWindow } from './helpers'
+import { restApp } from './image_upload_server'
 
 const isProd = process.env.NODE_ENV === 'production'
-
+restApp
 if (isProd) {
   serve({ directory: 'app' })
 } else {

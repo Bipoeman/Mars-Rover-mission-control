@@ -11,3 +11,6 @@ next-env.d.ts
 # build
 /app
 dist
+
+/uploads/*.png
+/uploads/*.jpg
