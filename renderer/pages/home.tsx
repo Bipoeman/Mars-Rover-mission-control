@@ -19,18 +19,16 @@ export default function HomePage() {
 
   function preloadImage(fileName: string) {
     // var image = new Image()
-    setImageSrc((prev) => {
-      // var src = `../../uploads/${fileName}`
-      // console.log(`Image SRC : ${src}`)
-      return fileName
-    })
+    setImageSrc((prev) => "")
+    setImageSrc((prev) => fileName)
   }
 
   useEffect(() => {
     window.ipc.on("image", (file: fileTranmit) => {
       console.log(file)
-      preloadImage(file.filename)
+      setImageSrc((prev) => "")
       setTeam(prev => file.team)
+      setTimeout(()=>setImageSrc((prev) => file.filename),500)
       // setTimeout(() => {
       //   setImageSrc(prev => "")
       // }, 5000)
@@ -66,7 +64,7 @@ export default function HomePage() {
       </span>
       <span className='rounded-3xl my-10 mx-[10vw] flex justify-center h-[70vh] border-white border-[6px] border-solid'>
         {imageSrc.length > 0 ?
-          <img src={imageSrc} className='object-cover' alt="" />
+          <img src={imageSrc} className='object-cover rounded-3xl' alt="" />
           // <Image src={imageSrc} className='block mx-10 relative object-cover' alt='123' width={1920} height={1080} objectFit='cover' />
           : <Lottie animationData={animation} onLoopComplete={animationEnded}></Lottie>}
 
