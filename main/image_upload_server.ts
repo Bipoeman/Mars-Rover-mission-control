@@ -3,6 +3,7 @@ import multer from 'multer'
 import * as fs from 'fs';
 import * as path from 'path';
 import cors from "cors";
+import { globalMainWindow } from './background';
 
 export var restApp = express();
 restApp.use(cors())
@@ -10,10 +11,10 @@ restApp.use(cors())
 // Set up storage engine for multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Specify the folder where files will be stored
+    cb(null, "renderer/public/images/"); // Specify the folder where files will be stored
   },
   filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`); // Save the file with a timestamp to avoid name collisions
+    cb(null, `output.${file.originalname.split(".").pop()}`); // Save the file with a timestamp to avoid name collisions
   }
 });
 
@@ -38,17 +39,27 @@ restApp.get("/", (req, res) => {
 });
 
 // Endpoint to handle file uploads
-restApp.post("/photos/upload", upload.array("photos", 12), (req, res) => {
+restApp.post("/photos/upload", upload.array("photos", 1), (req, res) => {
+  interface fileTranmit {
+    filename: string;
+    team : string;
+  }
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ error: "No files uploaded" });
   }
-
+  var fileName : string = req.files[0]['filename']
   const fileDetails = req.files.map(file => ({
     originalName: file.originalname,
     savedName: file.filename,
     path: file.path,
     size: file.size
   }));
+  var transfer : fileTranmit = {
+    "filename" : fileName,
+    "team" : req.body.team
+  }
+  globalMainWindow.webContents.send("image",transfer)
+  console.log(`filename : ${fileName}`)
 
   res.status(200).json({
     message: "Files uploaded successfully",

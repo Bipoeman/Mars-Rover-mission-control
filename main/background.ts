@@ -4,8 +4,12 @@ import serve from 'electron-serve'
 import { createWindow } from './helpers'
 import { restApp } from './image_upload_server'
 
+
 const isProd = process.env.NODE_ENV === 'production'
 restApp
+
+export var globalMainWindow : Electron.CrossProcessExports.BrowserWindow
+
 if (isProd) {
   serve({ directory: 'app' })
 } else {
@@ -21,9 +25,11 @@ if (isProd) {
     autoHideMenuBar : true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      devTools : false,
+      // devTools : false,
     },
   })
+
+  globalMainWindow = mainWindow
 
   if (isProd) {
     await mainWindow.loadURL('app://./home')
