@@ -1,8 +1,8 @@
-appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+appId: com.openfruit.project
+productName: MARS Rover Mission Control
+copyright: Copyright © 2018 Chanathip Yodkhuang
 directories:
-  output: dist
+  output: build
   buildResources: resources
 files:
   - from: .

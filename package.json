@@ -1,10 +1,20 @@
 {
   "private": true,
   "name": "my-nextron-app",
-  "description": "My application description",
+  "description": "Application for MARS Rover Project mission control",
   "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "author": "Chanathip Yodkhuang <shiono.yoshihide@gmail.com>",
   "main": "app/background.js",
+  "win": {
+    "icon": "./resources/mars-logo.png",
+    "target": "nsis"
+  },
+  "nsis": {
+    "allowElevation": false,
+    "allowToChangeInstallationDirectory": true,
+    "oneClick": false,
+    "perMachine": true
+  },
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
