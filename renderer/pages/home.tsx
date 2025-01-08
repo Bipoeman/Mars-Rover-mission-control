@@ -20,9 +20,9 @@ export default function HomePage() {
   function preloadImage(fileName: string) {
     // var image = new Image()
     setImageSrc((prev) => {
-      var src = `/images/${fileName}`
-      console.log(`Image SRC : ${src}`)
-      return src
+      // var src = `../../uploads/${fileName}`
+      // console.log(`Image SRC : ${src}`)
+      return fileName
     })
   }
 

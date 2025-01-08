@@ -3,10 +3,13 @@ import { app, ipcMain } from 'electron'
 import serve from 'electron-serve'
 import { createWindow } from './helpers'
 import { restApp } from './image_upload_server'
+import { mkdir, mkdirSync } from 'fs'
+import { mqttClient } from './mqtt_client'
 
 
 const isProd = process.env.NODE_ENV === 'production'
-restApp
+// restApp
+mqttClient
 
 export var globalMainWindow : Electron.CrossProcessExports.BrowserWindow
 
@@ -23,7 +26,7 @@ if (isProd) {
     width: 1000,
     height: 600,
     autoHideMenuBar : true,
-    icon : "./resources/mars-logo.png",
+    icon : "./resources/icon.png",
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       // devTools : false,
@@ -31,6 +34,13 @@ if (isProd) {
   })
 
   globalMainWindow = mainWindow
+  try{
+    mkdirSync("uploads")
+
+  }
+  catch{
+    
+  }
 
   if (isProd) {
     await mainWindow.loadURL('app://./home')

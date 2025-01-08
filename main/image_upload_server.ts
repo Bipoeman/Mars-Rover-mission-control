@@ -11,7 +11,8 @@ restApp.use(cors())
 // Set up storage engine for multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "renderer/public/images/"); // Specify the folder where files will be stored
+    // cb(null, "renderer/public/images/"); // Specify the folder where files will be stored
+    cb(null, "uploads/"); // Specify the folder where files will be stored
   },
   filename: function (req, file, cb) {
     cb(null, `output.${file.originalname.split(".").pop()}`); // Save the file with a timestamp to avoid name collisions
