@@ -6,7 +6,7 @@
   "author": "Chanathip Yodkhuang <shiono.yoshihide@gmail.com>",
   "main": "app/background.js",
   "win": {
-    "icon": "./resources/mars-logo.png",
+    "icon": "./resources/icon.png",
     "target": "nsis"
   },
   "nsis": {

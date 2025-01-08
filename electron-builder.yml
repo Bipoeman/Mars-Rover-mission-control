@@ -1,6 +1,6 @@
-appId: com.openfruit.project
+appId: com.openfruit.project.mission
 productName: MARS Rover Mission Control
-copyright: Copyright © 2018 Chanathip Yodkhuang
+copyright: Copyright © 2025 Chanathip Yodkhuang
 directories:
   output: build
   buildResources: resources
@@ -10,3 +10,9 @@ files:
       - package.json
       - app
 publish: null
+nsis:
+  allowToChangeInstallationDirectory: true
+  oneClick: false
+  perMachine: true
+  runAfterFinish: false
+  warningsAsErrors: false # off b/c RmTrailingSlash gives a warning
