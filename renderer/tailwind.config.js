@@ -12,7 +12,9 @@ module.exports = {
       gray: colors.gray,
       blue: colors.blue,
     },
-    extend: {},
+    extend: {
+
+    },
   },
   plugins: [],
 }

@@ -15,6 +15,7 @@ mqttClient.on("error",(error: Error | mqtt.ErrorWithReasonCode)=>{
     console.log("MQTT Error : ",error.message)
 })
 
+
 mqttClient.on("message",(topic: string, payload: Buffer, packet: mqtt.IPublishPacket)=>{
     if (topic === "/app/reportState"){
         var payloadJson = JSON.parse(payload.toString())

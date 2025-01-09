@@ -5,13 +5,14 @@ import { createWindow } from './helpers'
 import { restApp } from './image_upload_server'
 import { mkdir, mkdirSync } from 'fs'
 import { mqttClient } from './mqtt_client'
+import mqtt from 'mqtt/*'
 
 
 const isProd = process.env.NODE_ENV === 'production'
 // restApp
 mqttClient
 
-export var globalMainWindow : Electron.CrossProcessExports.BrowserWindow
+export var globalMainWindow: Electron.CrossProcessExports.BrowserWindow
 
 if (isProd) {
   serve({ directory: 'app' })
@@ -19,27 +20,32 @@ if (isProd) {
   app.setPath('userData', `${app.getPath('userData')} (development)`)
 }
 
-;(async () => {
+interface submitInterface {
+  status: string;
+  team: string;
+}
+
+; (async () => {
   await app.whenReady()
 
   const mainWindow = createWindow('main', {
     width: 1000,
     height: 600,
-    autoHideMenuBar : true,
-    icon : "./resources/icon.png",
+    autoHideMenuBar: true,
+    icon: "./resources/icon.png",
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      // devTools : false,
+      devTools: false,
     },
   })
 
   globalMainWindow = mainWindow
-  try{
+  try {
     mkdirSync("uploads")
 
   }
-  catch{
-    
+  catch {
+
   }
 
   if (isProd) {
@@ -57,4 +63,10 @@ app.on('window-all-closed', () => {
 
 ipcMain.on('message', async (event, arg) => {
   event.reply('message', `${arg} World!`)
+})
+
+ipcMain.on("submit", (event, arg: submitInterface)=>{
+  if (mqttClient && mqttClient.connected){
+    mqttClient.publish("/app/command",JSON.stringify(arg))
+  }
 })

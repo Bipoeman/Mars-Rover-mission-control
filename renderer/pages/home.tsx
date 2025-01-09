@@ -4,13 +4,18 @@ import Link from 'next/link'
 import Image from 'next/image';
 import { K2D } from 'next/font/google'
 import Lottie from 'lottie-react';
-import waiting from "./deliver.json"
+import waiting from "./pending.json"
 import pass from "./img-pass.json"
 import not_pass from "./img-not-pass.json"
+import { motion } from "motion/react"
 const k2d = K2D({ weight: "500", subsets: ['latin', 'thai'] })
 interface fileTranmit {
   filename: string;
   team: string;
+}
+interface submitInterface{
+  status : string;
+  team : string;
 }
 export default function HomePage() {
   var [imageSrc, setImageSrc] = useState("");
@@ -28,7 +33,7 @@ export default function HomePage() {
       console.log(file)
       setImageSrc((prev) => "")
       setTeam(prev => file.team)
-      setTimeout(()=>setImageSrc((prev) => file.filename),500)
+      setTimeout(() => setImageSrc((prev) => file.filename), 500)
       // setTimeout(() => {
       //   setImageSrc(prev => "")
       // }, 5000)
@@ -37,17 +42,28 @@ export default function HomePage() {
 
   function clearImage() {
     setImageSrc(prev => "")
+    setTeam(prev=>"")
   }
 
   function onAcept() {
     clearImage();
     setAnimation(prev => pass)
+    var status : submitInterface = {
+      status : "acept",
+      team : team,
+    }
+    window.ipc.send("submit",status)
   }
   function onReject() {
     clearImage();
     setAnimation(prev => not_pass)
+    var status : submitInterface = {
+      status : "reject",
+      team : team
+    }
+    window.ipc.send("submit",status)
   }
-  function animationEnded(){
+  function animationEnded() {
     setAnimation(prev => waiting)
   }
 
@@ -58,7 +74,7 @@ export default function HomePage() {
       </Head>
       <span className='block text-6xl text-center'>
         {"Team "}
-        <span>
+        <span >
           {imageSrc.length > 0 ? team : "..."}
         </span>
       </span>
