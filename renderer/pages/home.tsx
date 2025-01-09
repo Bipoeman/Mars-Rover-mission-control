@@ -8,6 +8,7 @@ import waiting from "./pending.json"
 import pass from "./img-pass.json"
 import not_pass from "./img-not-pass.json"
 import { motion } from "motion/react"
+import { stat } from 'fs';
 const k2d = K2D({ weight: "500", subsets: ['latin', 'thai'] })
 interface fileTranmit {
   filename: string;
@@ -17,10 +18,14 @@ interface submitInterface{
   status : string;
   team : string;
 }
+interface uploadAllowed {
+  enable: boolean;
+}
 export default function HomePage() {
   var [imageSrc, setImageSrc] = useState("");
   var [animation, setAnimation] = useState<Object>(waiting);
   var [team, setTeam] = useState("");
+  var [uploadAllowedState,setUploadAllowedState] = useState(true)
 
   function preloadImage(fileName: string) {
     // var image = new Image()
@@ -37,6 +42,9 @@ export default function HomePage() {
       // setTimeout(() => {
       //   setImageSrc(prev => "")
       // }, 5000)
+    })
+    window.ipc.on("imageState", (state: uploadAllowed) => {
+      setUploadAllowedState(prev=>state.enable)
     })
   })
 
@@ -66,6 +74,9 @@ export default function HomePage() {
   function animationEnded() {
     setAnimation(prev => waiting)
   }
+  function onToggleUpload(){
+    window.ipc.send("imageAllow",{"enable" : !uploadAllowedState})
+  }
 
   return (
     <div className={`${k2d.className} flex flex-col justify-between py-[5vh] h-dvh`}>
@@ -88,6 +99,7 @@ export default function HomePage() {
       <span className='flex justify-around mx-[10vw]'>
         <button onClick={onAcept} className='px-[8vw] py-6 bg-[#137140] hover:bg-[#125331] hover:transition-colors hover:duration-200 hover:ease-in-out text-3xl rounded-lg'>Acept</button>
         <button onClick={onReject} className='px-[8vw] py-6 bg-[#711313] hover:bg-[#571212] hover:transition-colors hover:duration-200 hover:ease-in-out text-3xl rounded-lg'>Reject</button>
+        <button onClick={onToggleUpload} className='px-6 py-6 bg-[#641371] hover:bg-[#4c1354] hover:transition-colors hover:duration-200 hover:ease-in-out text-3xl rounded-lg'>{`Upload ${uploadAllowedState ? "Allowed 🔓" : "Unallowed 🔒"}`}</button>
       </span>
     </div>
   )

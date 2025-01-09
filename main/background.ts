@@ -24,7 +24,9 @@ interface submitInterface {
   status: string;
   team: string;
 }
-
+interface uploadAllowed {
+  enable: boolean;
+}
 ; (async () => {
   await app.whenReady()
 
@@ -65,8 +67,8 @@ ipcMain.on('message', async (event, arg) => {
   event.reply('message', `${arg} World!`)
 })
 
-ipcMain.on("submit", (event, arg: submitInterface)=>{
+ipcMain.on("imageAllow", (event, arg:uploadAllowed)=>{
   if (mqttClient && mqttClient.connected){
-    mqttClient.publish("/app/command",JSON.stringify(arg))
+    mqttClient.publish("/app/enableUpload",JSON.stringify(arg))
   }
 })
