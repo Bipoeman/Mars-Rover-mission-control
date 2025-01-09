@@ -51,6 +51,7 @@ export default function HomePage() {
   function clearImage() {
     setImageSrc(prev => "")
     setTeam(prev=>"")
+    window.ipc.send("imageAllow",{"enable" : true})
   }
 
   function onAcept() {
@@ -99,7 +100,7 @@ export default function HomePage() {
       <span className='flex justify-around mx-[10vw]'>
         <button onClick={onAcept} className='px-[8vw] py-6 bg-[#137140] hover:bg-[#125331] hover:transition-colors hover:duration-200 hover:ease-in-out text-3xl rounded-lg'>Acept</button>
         <button onClick={onReject} className='px-[8vw] py-6 bg-[#711313] hover:bg-[#571212] hover:transition-colors hover:duration-200 hover:ease-in-out text-3xl rounded-lg'>Reject</button>
-        <button onClick={onToggleUpload} className='px-6 py-6 bg-[#641371] hover:bg-[#4c1354] hover:transition-colors hover:duration-200 hover:ease-in-out text-3xl rounded-lg'>{`Upload ${uploadAllowedState ? "Allowed 🔓" : "Unallowed 🔒"}`}</button>
+        <button onClick={onToggleUpload} className={`px-6 py-6 bg-[#641371] hover:bg-[#4c1354] transition-transform hover:transition-colors hover:duration-200 hover:ease-in-out text-3xl rounded-lg`}>{`Upload ${uploadAllowedState ? "Allowed 🔓" : "Unallowed 🔒"}`}</button>
       </span>
     </div>
   )
