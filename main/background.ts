@@ -72,3 +72,9 @@ ipcMain.on("imageAllow", (event, arg:uploadAllowed)=>{
     mqttClient.publish("/app/enableUpload",JSON.stringify(arg))
   }
 })
+
+ipcMain.on("submit", (event, arg : submitInterface)=>{
+  if (mqttClient && mqttClient.connected){
+    mqttClient.publish("/app/command",JSON.stringify(arg))
+  }
+})
