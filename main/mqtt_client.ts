@@ -1,7 +1,7 @@
 import mqtt from "mqtt";
 import { globalMainWindow } from "./background";
 
-export const mqttClient = mqtt.connect("mqtt://localhost");
+export const mqttClient = mqtt.connect("mqtt://rover-server");
 interface fileTranmit {
     filename: string;
     team: string;
